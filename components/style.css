@@ -1,3 +1,35 @@
 .bk_bar {
   background-image: url("../public/images/bar_bk.jpg") !important;
 }
+
+.footer-container {
+  background-color: #f2f2f2; /* Light grey background */
+  padding: 20px 0; /* Spacing around the footer */
+}
+
+.footer-content {
+  display: flex;
+  align-items: center; /* Center items vertically */
+  justify-content: space-between; /* Space between elements */
+  width: 100%; /* Full width */
+  max-width: 626px; /* Max width to match original design */
+  margin: 0 auto; /* Center the footer */
+}
+
+.footer-corner {
+  display: flex;
+  align-items: center; /* Center the corner images vertically */
+}
+
+.footer-text {
+  font-family: "Verdana, Arial, Helvetica, sans-serif";
+  font-size: 12px;
+  color: #333; /* Text color */
+  flex: 1; /* Allow text sections to grow */
+  text-align: center; /* Center text */
+}
+
+.footer-logo {
+  display: flex;
+  justify-content: center; /* Center the logo */
+}
