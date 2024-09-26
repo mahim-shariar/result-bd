@@ -162,7 +162,11 @@ const Homeinput = () => {
                     fontSize: "11px",
                     fontFamily: "Verdana, Arial, Helvetica, sans-serif",
                     paddingRight: "5px",
+                    /* Remove the &:hover code block */
+                    cursor: "pointer",
+                    /* Add the &:hover code block */
                   }}
+                  className="btn-hover"
                   href="http://www.educationboard.gov.bd"
                 >
                   Official Website of Education Board
