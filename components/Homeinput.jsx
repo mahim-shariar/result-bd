@@ -96,6 +96,20 @@ const Homeinput = () => {
     fontFamily: "Verdana, Arial, Helvetica, sans-serif",
   };
 
+  const tableStyle = {
+    borderCollapse: "collapse",
+    width: "650px",
+    margin: "0 auto",
+    backgroundColor: "#FFFFFF",
+    border: "1px solid white",
+  };
+
+  const cellStyle = {
+    border: "1px solid white",
+    padding: "2px",
+    fontSize: "12px",
+  };
+
   return (
     <div className="my-2 container-lg">
       <div className="flex justify-center">
@@ -215,8 +229,8 @@ const Homeinput = () => {
                         <option value="jsc">JSC/JDC</option>
                         <option value="ssc">SSC/Dakhil</option>
                         <option value="ssc_voc">SSC(Vocational)</option>
-                        <option value="hsc">HSC/Alim</option>
-                        <option value="hsc_voc">HSC(Vocational)</option>
+                        <option value="hsc_alim">HSC/Alim</option>
+                        <option value="hsc">HSC(Vocational)</option>
                         <option value="hsc_hbm">HSC(BM)</option>
                         <option value="hsc_dic">Diploma in Commerce</option>
                         <option value="hsc">Diploma in Business Studies</option>
@@ -509,6 +523,274 @@ const Homeinput = () => {
               </div>
             </div>
           </div>
+          <table style={tableStyle}>
+            <tbody>
+              <tr>
+                <td valign="top">
+                  <table style={{ ...tableStyle, width: "100%" }}>
+                    <tbody>
+                      <tr>
+                        <td
+                          height="50"
+                          align="center"
+                          valign="middle"
+                          // style={cellStyle}
+                          // className="black16bold"
+                          style={{
+                            ...cellStyle,
+                            fontSize: "18px",
+                            fontWeight: "bold",
+                          }}
+                          // className="text-xl"
+                        >
+                          HSC/Alim/Equivalent Result 2023
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="center" valign="middle">
+                          <table style={{ ...tableStyle, width: "100%" }}>
+                            <tbody>
+                              <tr>
+                                <td align="center" valign="middle">
+                                  <table
+                                    style={{ ...tableStyle, width: "100%" }}
+                                  >
+                                    <tbody>
+                                      <tr>
+                                        <td style={cellStyle} bgcolor="#EEEEEE">
+                                          Roll No
+                                        </td>
+                                        <td style={cellStyle} bgcolor="#EEEEEE">
+                                          112523
+                                        </td>
+                                        <td style={cellStyle} bgcolor="#EEEEEE">
+                                          Name
+                                        </td>
+                                        <td style={cellStyle} bgcolor="#EEEEEE">
+                                          AFSANA AKTER MIM
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td style={cellStyle} bgcolor="#EEEEEE">
+                                          Board
+                                        </td>
+                                        <td style={cellStyle} bgcolor="#EEEEEE">
+                                          DHAKA
+                                        </td>
+                                        <td style={cellStyle} bgcolor="#EEEEEE">
+                                          Father's Name
+                                        </td>
+                                        <td style={cellStyle} bgcolor="#EEEEEE">
+                                          MD. AFSAR TALUKDER
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td style={cellStyle} bgcolor="#EEEEEE">
+                                          Group
+                                        </td>
+                                        <td style={cellStyle} bgcolor="#EEEEEE">
+                                          SCIENCE
+                                        </td>
+                                        <td style={cellStyle} bgcolor="#EEEEEE">
+                                          Mother's Name
+                                        </td>
+                                        <td style={cellStyle} bgcolor="#EEEEEE">
+                                          ROWSHON ARA
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td style={cellStyle} bgcolor="#EEEEEE">
+                                          Type
+                                        </td>
+                                        <td style={cellStyle} bgcolor="#EEEEEE">
+                                          REGULAR
+                                        </td>
+                                        <td style={cellStyle} bgcolor="#EEEEEE">
+                                          Date of Birth
+                                        </td>
+                                        <td style={cellStyle} bgcolor="#EEEEEE">
+                                          N/A
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td style={cellStyle} bgcolor="#EEEEEE">
+                                          Result
+                                        </td>
+                                        <td
+                                          style={cellStyle}
+                                          className="black12bold pading-in-result"
+                                          bgcolor="#EEEEEE"
+                                        >
+                                          PASSED
+                                        </td>
+                                        <td style={cellStyle} bgcolor="#EEEEEE">
+                                          Institute
+                                        </td>
+                                        <td style={cellStyle} bgcolor="#EEEEEE">
+                                          GOVT. KALACHANDPUR HIGH SCHOOL <br />{" "}
+                                          AND COLLEGE
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td style={cellStyle} bgcolor="#EEEEEE">
+                                          GPA
+                                        </td>
+                                        <td
+                                          style={cellStyle}
+                                          className="black12bold"
+                                          colSpan="3"
+                                          bgcolor="#EEEEEE"
+                                        >
+                                          3.42
+                                        </td>
+                                      </tr>
+                                      {/* More rows can be added here */}
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td height="40" align="center" valign="middle">
+                                  <span
+                                    style={{
+                                      ...cellStyle,
+                                      fontSize: "18px",
+                                      fontWeight: "bold",
+                                    }}
+                                    className="black16bold"
+                                  >
+                                    Grade Sheet
+                                  </span>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td align="center" valign="middle">
+                                  <table
+                                    style={{ ...tableStyle, width: "100%" }}
+                                  >
+                                    <tbody>
+                                      <tr className="black12bold">
+                                        <td
+                                          style={cellStyle}
+                                          width="19%"
+                                          bgcolor="#AFB7BE"
+                                        >
+                                          Code
+                                        </td>
+                                        <td
+                                          style={cellStyle}
+                                          width="66%"
+                                          bgcolor="#AFB7BE"
+                                        >
+                                          Subject
+                                        </td>
+                                        <td
+                                          style={cellStyle}
+                                          width="15%"
+                                          bgcolor="#AFB7BE"
+                                        >
+                                          Grade
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td style={cellStyle} bgcolor="#EEEEEE">
+                                          101
+                                        </td>
+                                        <td style={cellStyle} bgcolor="#EEEEEE">
+                                          BANGLA
+                                        </td>
+                                        <td style={cellStyle} bgcolor="#EEEEEE">
+                                          A-
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td style={cellStyle} bgcolor="#DEE1E4">
+                                          107
+                                        </td>
+                                        <td style={cellStyle} bgcolor="#DEE1E4">
+                                          ENGLISH
+                                        </td>
+                                        <td style={cellStyle} bgcolor="#DEE1E4">
+                                          A-
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td style={cellStyle} bgcolor="#EEEEEE">
+                                          275
+                                        </td>
+                                        <td style={cellStyle} bgcolor="#EEEEEE">
+                                          INFORMATION & COMMUNICATION TECHNOLOGY
+                                        </td>
+                                        <td style={cellStyle} bgcolor="#EEEEEE">
+                                          A-
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td style={cellStyle} bgcolor="#DEE1E4">
+                                          174
+                                        </td>
+                                        <td style={cellStyle} bgcolor="#DEE1E4">
+                                          PHYSICS
+                                        </td>
+                                        <td style={cellStyle} bgcolor="#DEE1E4">
+                                          B
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td style={cellStyle} bgcolor="#EEEEEE">
+                                          176
+                                        </td>
+                                        <td style={cellStyle} bgcolor="#EEEEEE">
+                                          CHEMISTRY
+                                        </td>
+                                        <td style={cellStyle} bgcolor="#EEEEEE">
+                                          A-
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td style={cellStyle} bgcolor="#DEE1E4">
+                                          178
+                                        </td>
+                                        <td style={cellStyle} bgcolor="#DEE1E4">
+                                          BIOLOGY
+                                        </td>
+                                        <td style={cellStyle} bgcolor="#DEE1E4">
+                                          A-
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td style={cellStyle} bgcolor="#EEEEEE">
+                                          265
+                                        </td>
+                                        <td style={cellStyle} bgcolor="#EEEEEE">
+                                          HIGHER MATHEMATICS
+                                        </td>
+                                        <td style={cellStyle} bgcolor="#EEEEEE">
+                                          C
+                                        </td>
+                                      </tr>
+                                      {/* Add more rows as needed */}
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="center" valign="middle" height="40">
+                          <a href="index.php" className="links">
+                            Search Again
+                          </a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
