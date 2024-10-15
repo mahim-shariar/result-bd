@@ -96,7 +96,6 @@ const Homeinput = () => {
       if (response.status === 200) {
         // Handle success: update formValues with fetched data
         setResultData(response.data);
-        handleReset();
       } else {
         console.error("Error fetching data:", response.statusText);
         window.location.reload();
@@ -117,6 +116,7 @@ const Homeinput = () => {
     });
     setCaptchaInput(""); // Clear captcha input
     refreshMathProblem(); // Reset the captcha
+    window.location.reload();
   };
 
   const inputStyle = {
