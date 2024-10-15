@@ -143,7 +143,8 @@ const Homeinput = () => {
     fontSize: "12px",
   };
 
-  const handlePrint = () => {
+  const handlePrint = (event) => {
+    event.preventDefault();
     const printContents = document.getElementById("resultTable").innerHTML;
     const originalContents = document.body.innerHTML;
 
