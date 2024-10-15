@@ -144,13 +144,12 @@ const Homeinput = () => {
   };
 
   const handlePrint = () => {
-    const input = document.getElementById("resultTable");
-    html2canvas(input).then((canvas) => {
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF();
-      pdf.addImage(imgData, "PNG", 0, 0);
-      pdf.save("result.pdf");
-    });
+    const printContents = document.getElementById("resultTable").innerHTML;
+    const originalContents = document.body.innerHTML;
+
+    document.body.innerHTML = printContents;
+    window.print();
+    document.body.innerHTML = originalContents;
   };
 
   return (
@@ -525,8 +524,8 @@ const Homeinput = () => {
 
           {resultData && (
             <div className="pt-10">
-              <table style={tableStyle} id="resultTable">
-                <tbody>
+              <table style={tableStyle}>
+                <tbody id="resultTable">
                   <tr>
                     <td valign="top">
                       <table style={{ ...tableStyle, width: "100%" }}>
