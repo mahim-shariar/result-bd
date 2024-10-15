@@ -55,7 +55,7 @@ const page = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3001/submit",
+        "https://result-bd-server-snowy.vercel.app/submit",
         formValues,
         {
           headers: {

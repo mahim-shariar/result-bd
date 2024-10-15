@@ -5,18 +5,22 @@ import banner_flag from "../public/images/banner_flag.jpg";
 import telitok from "../public/images/pngegg.png";
 import Image from "next/image";
 import "./style.css";
+import axios from "axios";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 const Homeinput = () => {
   const [num1, setNum1] = useState(1); // Initial value set to 0 to avoid server-client mismatch
   const [num2, setNum2] = useState(1); // Initial value set to 0
   const [captchaInput, setCaptchaInput] = useState(""); // Captcha input state
   const [formValues, setFormValues] = useState({
-    exam: "ssc",
-    year: "0000",
+    exam: "hsc",
+    year: "2024",
     board: "",
     roll: "",
     reg: "",
   });
+  const [resultData, setResultData] = useState(null);
 
   const onlyNumbers = (e) => {
     const charCode = e.which ? e.which : e.keyCode;
@@ -42,7 +46,9 @@ const Homeinput = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  console.log(formValues);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Validation for required fields
@@ -65,12 +71,39 @@ const Homeinput = () => {
 
     // Captcha validation
 
+    let captchaSum = num1 + num2;
+
     if (parseInt(captchaInput) !== captchaSum) {
       alert(""); // Alert on wrong captcha
       window.location.reload(); // Reload page if captcha is wrong
-    } else {
-      // Add your form submission logic here
-      alert(""); // Example success message
+    }
+
+    try {
+      const response = await axios.get(
+        "https://result-bd-server-snowy.vercel.app/check",
+        {
+          params: {
+            roll: formValues.roll,
+            reg: formValues.reg,
+            board: formValues.board,
+            exam: formValues.exam,
+            year: formValues.year,
+          },
+        }
+      );
+
+      console.log("Data fetched:", response.data);
+      if (response.status === 200) {
+        // Handle success: update formValues with fetched data
+        setResultData(response.data);
+        handleReset();
+      } else {
+        console.error("Error fetching data:", response.statusText);
+        window.location.reload();
+      }
+      // Handle the response data here
+    } catch (error) {
+      console.error("Error fetching data:", error);
     }
   };
 
@@ -98,7 +131,7 @@ const Homeinput = () => {
 
   const tableStyle = {
     borderCollapse: "collapse",
-    width: "650px",
+    width: "550px",
     margin: "0 auto",
     backgroundColor: "#FFFFFF",
     border: "1px solid white",
@@ -108,6 +141,16 @@ const Homeinput = () => {
     border: "1px solid white",
     padding: "2px",
     fontSize: "12px",
+  };
+
+  const handlePrint = () => {
+    const input = document.getElementById("resultTable");
+    html2canvas(input).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF();
+      pdf.addImage(imgData, "PNG", 0, 0);
+      pdf.save("result.pdf");
+    });
   };
 
   return (
@@ -181,9 +224,9 @@ const Homeinput = () => {
                     /* Add the &:hover code block */
                   }}
                   className="btn-hover"
-                  href="http://www.educationboard.gov.bd"
+                  href="/"
                 >
-                  Official Website of Education Board
+                  Result Archive
                 </a>
               </div>
             </div>
@@ -225,15 +268,7 @@ const Homeinput = () => {
                         value={formValues.exam}
                         onChange={handleInputChange}
                       >
-                        <option value="ssc">SSC/Dakhil/Equivalent</option>
-                        <option value="jsc">JSC/JDC</option>
-                        <option value="ssc">SSC/Dakhil</option>
-                        <option value="ssc_voc">SSC(Vocational)</option>
-                        <option value="hsc_alim">HSC/Alim</option>
-                        <option value="hsc">HSC(Vocational)</option>
-                        <option value="hsc_hbm">HSC(BM)</option>
-                        <option value="hsc_dic">Diploma in Commerce</option>
-                        <option value="hsc">Diploma in Business Studies</option>
+                        <option value="hsc">HSC/Alim/Equivalent</option>
                       </select>
                     </div>
                   </div>
@@ -267,36 +302,7 @@ const Homeinput = () => {
                         value={formValues.year}
                         onChange={handleInputChange}
                       >
-                        <option value="0000">Select One</option>
                         <option value="2024">2024</option>
-                        <option value="2023">2023</option>
-                        <option value="2022">2022</option>
-                        <option value="2021">2021</option>
-                        <option value="2020">2020</option>
-                        <option value="2019">2019</option>
-                        <option value="2018">2018</option>
-                        <option value="2017">2017</option>
-                        <option value="2016">2016</option>
-                        <option value="2015">2015</option>
-                        <option value="2014">2014</option>
-                        <option value="2013">2013</option>
-                        <option value="2012">2012</option>
-                        <option value="2011">2011</option>
-                        <option value="2010">2010</option>
-                        <option value="2009">2009</option>
-                        <option value="2008">2008</option>
-                        <option value="2007">2007</option>
-                        <option value="2006">2006</option>
-                        <option value="2005">2005</option>
-                        <option value="2004">2004</option>
-                        <option value="2003">2003</option>
-                        <option value="2002">2002</option>
-                        <option value="2001">2001</option>
-                        <option value="2000">2000</option>
-                        <option value="1999">1999</option>
-                        <option value="1998">1998</option>
-                        <option value="1997">1997</option>
-                        <option value="1996">1996</option>
                       </select>
                     </div>
                   </div>
@@ -334,7 +340,7 @@ const Homeinput = () => {
                         <option value="barisal">Barisal</option>
                         <option value="chittagong">Chittagong</option>
                         <option value="comilla">Comilla</option>
-                        <option value="dhaka">Dhaka</option>
+                        <option value="Dhaka">Dhaka</option>
                         <option value="dinajpur">Dinajpur</option>
                         <option value="jessore">Jessore</option>
                         <option value="mymensingh">Mymensingh</option>
@@ -461,12 +467,22 @@ const Homeinput = () => {
                     <button
                       className=""
                       style={{
-                        backgroundColor: "#f4f0f2",
-                        fontSize: "14px",
+                        backgroundColor: "#ff0000 ",
+                        fontSize: "11px",
+                        height: "38px",
+                        padding: "0 25px",
                         marginRight: "5px",
-                        padding: "2px 5px",
                         border: "1px solid #999",
-                        borderRadius: "2px",
+                        borderRadius: "4px",
+                        textTransform: "uppercase",
+                        color: "white",
+                        cursor: "pointer",
+                        border: "1px solid #bbb",
+                        lineHeight: "38px",
+                        letterSpacing: ".1rem",
+                        fontWeight: "600",
+                        display: "inline-block",
+                        boxSizing: "border-box",
                       }}
                       type="button"
                       onClick={handleReset}
@@ -478,11 +494,22 @@ const Homeinput = () => {
                     <button
                       className=""
                       style={{
-                        backgroundColor: "#f4f0f2",
-                        fontSize: "14px",
-                        padding: "2px 5px",
+                        backgroundColor: "#51ae22",
+                        fontSize: "11px",
+                        height: "38px",
+                        padding: "0 25px",
+
                         border: "1px solid #999",
-                        borderRadius: "2px",
+                        borderRadius: "4px",
+                        textTransform: "uppercase",
+                        color: "white",
+                        cursor: "pointer",
+                        border: "1px solid #bbb",
+                        lineHeight: "38px",
+                        letterSpacing: ".1rem",
+                        fontWeight: "600",
+                        display: "inline-block",
+                        boxSizing: "border-box",
                       }}
                       type="submit"
                     >
@@ -496,8 +523,351 @@ const Homeinput = () => {
             </div>
           </div>
 
+          {resultData && (
+            <div className="pt-10">
+              <table style={tableStyle} id="resultTable">
+                <tbody>
+                  <tr>
+                    <td valign="top">
+                      <table style={{ ...tableStyle, width: "100%" }}>
+                        <tbody>
+                          <tr className="bg-[#51ae22]">
+                            <td
+                              height="40"
+                              align="center"
+                              valign="middle"
+                              style={{
+                                ...cellStyle,
+                                fontSize: "18px",
+                                fontWeight: "bold",
+                                color: "white",
+                              }}
+                            >
+                              HSC/Alim/Equivalent Result 2024
+                            </td>
+                          </tr>
+                          <tr>
+                            <td align="center" valign="middle">
+                              <table style={{ ...tableStyle, width: "100%" }}>
+                                <tbody>
+                                  <tr>
+                                    <td align="center" valign="middle">
+                                      <table
+                                        style={{ ...tableStyle, width: "100%" }}
+                                      >
+                                        <tbody>
+                                          <tr>
+                                            <td
+                                              style={cellStyle}
+                                              bgcolor="#EEEEEE"
+                                            >
+                                              Roll No
+                                            </td>
+                                            <td
+                                              style={cellStyle}
+                                              bgcolor="#EEEEEE"
+                                            >
+                                              {resultData.roll}
+                                            </td>
+                                            <td
+                                              style={cellStyle}
+                                              bgcolor="#EEEEEE"
+                                            >
+                                              Name
+                                            </td>
+                                            <td
+                                              style={cellStyle}
+                                              bgcolor="#EEEEEE"
+                                            >
+                                              {resultData.name}
+                                            </td>
+                                          </tr>
+                                          <tr>
+                                            <td
+                                              style={cellStyle}
+                                              bgcolor="#EEEEEE"
+                                            >
+                                              Board
+                                            </td>
+                                            <td
+                                              style={cellStyle}
+                                              bgcolor="#EEEEEE"
+                                            >
+                                              {resultData.board}
+                                            </td>
+                                            <td
+                                              style={cellStyle}
+                                              bgcolor="#EEEEEE"
+                                            >
+                                              Father's Name
+                                            </td>
+                                            <td
+                                              style={cellStyle}
+                                              bgcolor="#EEEEEE"
+                                            >
+                                              {resultData.fatherName}
+                                            </td>
+                                          </tr>
+                                          <tr>
+                                            <td
+                                              style={cellStyle}
+                                              bgcolor="#EEEEEE"
+                                            >
+                                              Group
+                                            </td>
+                                            <td
+                                              style={cellStyle}
+                                              bgcolor="#EEEEEE"
+                                            >
+                                              {resultData.group}
+                                            </td>
+                                            <td
+                                              style={cellStyle}
+                                              bgcolor="#EEEEEE"
+                                            >
+                                              Mother's Name
+                                            </td>
+                                            <td
+                                              style={cellStyle}
+                                              bgcolor="#EEEEEE"
+                                            >
+                                              {resultData.motherName}
+                                            </td>
+                                          </tr>
+                                          <tr>
+                                            <td
+                                              style={cellStyle}
+                                              bgcolor="#EEEEEE"
+                                            >
+                                              Type
+                                            </td>
+                                            <td
+                                              style={cellStyle}
+                                              bgcolor="#EEEEEE"
+                                            >
+                                              IRREGULAR
+                                            </td>
+                                            <td
+                                              style={cellStyle}
+                                              bgcolor="#EEEEEE"
+                                            >
+                                              Date of Birth
+                                            </td>
+                                            <td
+                                              style={cellStyle}
+                                              bgcolor="#EEEEEE"
+                                            >
+                                              {resultData.dob || "N/A"}
+                                            </td>
+                                          </tr>
+                                          <tr>
+                                            <td
+                                              style={cellStyle}
+                                              bgcolor="#EEEEEE"
+                                            >
+                                              Result
+                                            </td>
+                                            <td
+                                              style={cellStyle}
+                                              bgcolor="#EEEEEE"
+                                              className="font-bold"
+                                            >
+                                              {resultData.result}
+                                            </td>
+                                            <td
+                                              style={cellStyle}
+                                              bgcolor="#EEEEEE"
+                                            >
+                                              Institute
+                                            </td>
+                                            <td
+                                              style={cellStyle}
+                                              bgcolor="#EEEEEE"
+                                              colSpan="3"
+                                            >
+                                              {resultData.institute}
+                                            </td>
+                                          </tr>
+                                          <tr>
+                                            <td
+                                              style={cellStyle}
+                                              bgcolor="#EEEEEE"
+                                            >
+                                              GPA
+                                            </td>
+                                            <td
+                                              style={cellStyle}
+                                              bgcolor="#EEEEEE"
+                                              colSpan="3"
+                                              className="font-bold"
+                                            >
+                                              {resultData.gpa}.00
+                                            </td>
+                                          </tr>
+                                        </tbody>
+                                      </table>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td
+                                      height="40"
+                                      align="center"
+                                      valign="middle"
+                                    >
+                                      <span
+                                        style={{
+                                          ...cellStyle,
+                                          fontSize: "18px",
+                                          fontWeight: "bold",
+                                        }}
+                                      >
+                                        Grade Sheet
+                                      </span>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td align="center" valign="middle">
+                                      <table
+                                        style={{ ...tableStyle, width: "100%" }}
+                                      >
+                                        <tbody>
+                                          <tr>
+                                            <td
+                                              style={cellStyle}
+                                              width="19%"
+                                              bgcolor="#AFB7BE"
+                                            >
+                                              Code
+                                            </td>
+                                            <td
+                                              style={cellStyle}
+                                              width="66%"
+                                              bgcolor="#AFB7BE"
+                                            >
+                                              Subject
+                                            </td>
+                                            <td
+                                              style={cellStyle}
+                                              width="15%"
+                                              bgcolor="#AFB7BE"
+                                            >
+                                              Grade
+                                            </td>
+                                          </tr>
+
+                                          {resultData && resultData.grades ? (
+                                            Object.entries(
+                                              resultData.grades
+                                            ).map(
+                                              ([subject, gradeData], index) => {
+                                                // Create a mapping for specific subject names
+                                                const subjectMappings = {
+                                                  math: "HIGHER MATHEMATICS",
+                                                  ict: "INFORMATION & COMMUNICATION TECHNOLOGY",
+                                                };
+
+                                                return (
+                                                  <tr key={index}>
+                                                    <td
+                                                      style={cellStyle}
+                                                      bgcolor={
+                                                        index % 2 === 0
+                                                          ? "#EEEEEE"
+                                                          : "#DEE1E4"
+                                                      }
+                                                    >
+                                                      {gradeData?.code || "N/A"}{" "}
+                                                      {/* Safely access code */}
+                                                    </td>
+                                                    <td
+                                                      style={cellStyle}
+                                                      bgcolor={
+                                                        index % 2 === 0
+                                                          ? "#EEEEEE"
+                                                          : "#DEE1E4"
+                                                      }
+                                                    >
+                                                      {/* Check if the subject is "math" or "ict", otherwise default to uppercase */}
+                                                      {subjectMappings[
+                                                        subject
+                                                      ] ||
+                                                        subject.toUpperCase()}
+                                                    </td>
+                                                    <td
+                                                      style={cellStyle}
+                                                      bgcolor={
+                                                        index % 2 === 0
+                                                          ? "#EEEEEE"
+                                                          : "#DEE1E4"
+                                                      }
+                                                    >
+                                                      {gradeData?.grade ||
+                                                        "N/A"}{" "}
+                                                      {/* Safely access grade */}
+                                                    </td>
+                                                  </tr>
+                                                );
+                                              }
+                                            )
+                                          ) : (
+                                            <tr>
+                                              <td
+                                                colSpan="3"
+                                                style={cellStyle}
+                                                align="center"
+                                              >
+                                                No grades available
+                                              </td>
+                                            </tr>
+                                          )}
+                                        </tbody>
+                                      </table>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                </tbody>
+                <div className="mt-5">
+                  <td align="left" valign="middle" height="40">
+                    <a
+                      style={{
+                        backgroundColor: "#51ae22",
+                        fontSize: "11px",
+                        height: "38px",
+                        padding: "0 25px",
+
+                        border: "1px solid #999",
+                        borderRadius: "4px",
+                        textTransform: "uppercase",
+                        color: "white",
+                        cursor: "pointer",
+                        border: "1px solid #bbb",
+                        lineHeight: "38px",
+                        letterSpacing: ".1rem",
+                        fontWeight: "600",
+                        display: "inline-block",
+                        boxSizing: "border-box",
+                      }}
+                      // href="index.php"
+                      className="links"
+                      onClick={handlePrint}
+                    >
+                      print
+                    </a>
+                  </td>
+                </div>
+              </table>
+            </div>
+          )}
+
           <div
-            className="px-4 py-5 mt-10 bg-[#EEEEEE]"
+            className="px-4 py-2 mt-5 bg-[#EEEEEE]"
             style={{
               borderBottomRightRadius: "8px",
               borderBottomLeftRadius: "8px",
@@ -506,7 +876,7 @@ const Homeinput = () => {
           >
             <div className="flex items-center justify-between max-w-3xl mx-auto">
               <div style={{ fontSize: "10px" }} className="text-gray-800 ">
-                &copy; 2005-2024 Ministry of Education, All rights reserved.
+                &copy; 2005-2023 Ministry of Education, All rights reserved.
               </div>
               <div className="flex items-center">
                 <p style={{ fontSize: "10px" }} className="mr-2 text-gray-800">
@@ -523,274 +893,6 @@ const Homeinput = () => {
               </div>
             </div>
           </div>
-          <table style={tableStyle}>
-            <tbody>
-              <tr>
-                <td valign="top">
-                  <table style={{ ...tableStyle, width: "100%" }}>
-                    <tbody>
-                      <tr>
-                        <td
-                          height="50"
-                          align="center"
-                          valign="middle"
-                          // style={cellStyle}
-                          // className="black16bold"
-                          style={{
-                            ...cellStyle,
-                            fontSize: "18px",
-                            fontWeight: "bold",
-                          }}
-                          // className="text-xl"
-                        >
-                          HSC/Alim/Equivalent Result 2023
-                        </td>
-                      </tr>
-                      <tr>
-                        <td align="center" valign="middle">
-                          <table style={{ ...tableStyle, width: "100%" }}>
-                            <tbody>
-                              <tr>
-                                <td align="center" valign="middle">
-                                  <table
-                                    style={{ ...tableStyle, width: "100%" }}
-                                  >
-                                    <tbody>
-                                      <tr>
-                                        <td style={cellStyle} bgcolor="#EEEEEE">
-                                          Roll No
-                                        </td>
-                                        <td style={cellStyle} bgcolor="#EEEEEE">
-                                          112523
-                                        </td>
-                                        <td style={cellStyle} bgcolor="#EEEEEE">
-                                          Name
-                                        </td>
-                                        <td style={cellStyle} bgcolor="#EEEEEE">
-                                          AFSANA AKTER MIM
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td style={cellStyle} bgcolor="#EEEEEE">
-                                          Board
-                                        </td>
-                                        <td style={cellStyle} bgcolor="#EEEEEE">
-                                          DHAKA
-                                        </td>
-                                        <td style={cellStyle} bgcolor="#EEEEEE">
-                                          Father's Name
-                                        </td>
-                                        <td style={cellStyle} bgcolor="#EEEEEE">
-                                          MD. AFSAR TALUKDER
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td style={cellStyle} bgcolor="#EEEEEE">
-                                          Group
-                                        </td>
-                                        <td style={cellStyle} bgcolor="#EEEEEE">
-                                          SCIENCE
-                                        </td>
-                                        <td style={cellStyle} bgcolor="#EEEEEE">
-                                          Mother's Name
-                                        </td>
-                                        <td style={cellStyle} bgcolor="#EEEEEE">
-                                          ROWSHON ARA
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td style={cellStyle} bgcolor="#EEEEEE">
-                                          Type
-                                        </td>
-                                        <td style={cellStyle} bgcolor="#EEEEEE">
-                                          REGULAR
-                                        </td>
-                                        <td style={cellStyle} bgcolor="#EEEEEE">
-                                          Date of Birth
-                                        </td>
-                                        <td style={cellStyle} bgcolor="#EEEEEE">
-                                          N/A
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td style={cellStyle} bgcolor="#EEEEEE">
-                                          Result
-                                        </td>
-                                        <td
-                                          style={cellStyle}
-                                          className="black12bold pading-in-result"
-                                          bgcolor="#EEEEEE"
-                                        >
-                                          PASSED
-                                        </td>
-                                        <td style={cellStyle} bgcolor="#EEEEEE">
-                                          Institute
-                                        </td>
-                                        <td style={cellStyle} bgcolor="#EEEEEE">
-                                          GOVT. KALACHANDPUR HIGH SCHOOL <br />{" "}
-                                          AND COLLEGE
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td style={cellStyle} bgcolor="#EEEEEE">
-                                          GPA
-                                        </td>
-                                        <td
-                                          style={cellStyle}
-                                          className="black12bold"
-                                          colSpan="3"
-                                          bgcolor="#EEEEEE"
-                                        >
-                                          3.42
-                                        </td>
-                                      </tr>
-                                      {/* More rows can be added here */}
-                                    </tbody>
-                                  </table>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td height="40" align="center" valign="middle">
-                                  <span
-                                    style={{
-                                      ...cellStyle,
-                                      fontSize: "18px",
-                                      fontWeight: "bold",
-                                    }}
-                                    className="black16bold"
-                                  >
-                                    Grade Sheet
-                                  </span>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td align="center" valign="middle">
-                                  <table
-                                    style={{ ...tableStyle, width: "100%" }}
-                                  >
-                                    <tbody>
-                                      <tr className="black12bold">
-                                        <td
-                                          style={cellStyle}
-                                          width="19%"
-                                          bgcolor="#AFB7BE"
-                                        >
-                                          Code
-                                        </td>
-                                        <td
-                                          style={cellStyle}
-                                          width="66%"
-                                          bgcolor="#AFB7BE"
-                                        >
-                                          Subject
-                                        </td>
-                                        <td
-                                          style={cellStyle}
-                                          width="15%"
-                                          bgcolor="#AFB7BE"
-                                        >
-                                          Grade
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td style={cellStyle} bgcolor="#EEEEEE">
-                                          101
-                                        </td>
-                                        <td style={cellStyle} bgcolor="#EEEEEE">
-                                          BANGLA
-                                        </td>
-                                        <td style={cellStyle} bgcolor="#EEEEEE">
-                                          A-
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td style={cellStyle} bgcolor="#DEE1E4">
-                                          107
-                                        </td>
-                                        <td style={cellStyle} bgcolor="#DEE1E4">
-                                          ENGLISH
-                                        </td>
-                                        <td style={cellStyle} bgcolor="#DEE1E4">
-                                          A-
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td style={cellStyle} bgcolor="#EEEEEE">
-                                          275
-                                        </td>
-                                        <td style={cellStyle} bgcolor="#EEEEEE">
-                                          INFORMATION & COMMUNICATION TECHNOLOGY
-                                        </td>
-                                        <td style={cellStyle} bgcolor="#EEEEEE">
-                                          A-
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td style={cellStyle} bgcolor="#DEE1E4">
-                                          174
-                                        </td>
-                                        <td style={cellStyle} bgcolor="#DEE1E4">
-                                          PHYSICS
-                                        </td>
-                                        <td style={cellStyle} bgcolor="#DEE1E4">
-                                          B
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td style={cellStyle} bgcolor="#EEEEEE">
-                                          176
-                                        </td>
-                                        <td style={cellStyle} bgcolor="#EEEEEE">
-                                          CHEMISTRY
-                                        </td>
-                                        <td style={cellStyle} bgcolor="#EEEEEE">
-                                          A-
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td style={cellStyle} bgcolor="#DEE1E4">
-                                          178
-                                        </td>
-                                        <td style={cellStyle} bgcolor="#DEE1E4">
-                                          BIOLOGY
-                                        </td>
-                                        <td style={cellStyle} bgcolor="#DEE1E4">
-                                          A-
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td style={cellStyle} bgcolor="#EEEEEE">
-                                          265
-                                        </td>
-                                        <td style={cellStyle} bgcolor="#EEEEEE">
-                                          HIGHER MATHEMATICS
-                                        </td>
-                                        <td style={cellStyle} bgcolor="#EEEEEE">
-                                          C
-                                        </td>
-                                      </tr>
-                                      {/* Add more rows as needed */}
-                                    </tbody>
-                                  </table>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td align="center" valign="middle" height="40">
-                          <a href="index.php" className="links">
-                            Search Again
-                          </a>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </td>
-              </tr>
-            </tbody>
-          </table>
         </div>
       </div>
     </div>
