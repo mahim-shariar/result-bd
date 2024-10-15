@@ -18,10 +18,29 @@ body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+  min-width: 1024px; /* Set a minimum width for desktop layout */
+  overflow-x: auto; /* Allow horizontal scrolling */
+  margin: 0; /* Remove default margin */
+  padding: 0; /* Remove default padding */
+  background-color: #eeeeee; /* Optional background color */
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+/* styles/globals.css */
+
+@media only screen and (max-width: 1024px) {
+  body {
+    min-width: 1024px; /* Maintain minimum width */
+    overflow-x: auto; /* Allow horizontal scrolling */
+  }
+}
+
+input,
+textarea {
+  font-size: 16px; /* Avoid zooming on mobile */
 }
